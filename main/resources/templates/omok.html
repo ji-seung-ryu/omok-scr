@@ -1,0 +1,59 @@
+<!--
+     간단한 웹 오목 게임
+     렌주룰을 기반으로 한 오목 게임을 브라우저 상에서 즐길 수 있으며,
+     정확한 금수 처리 알고리즘을 바탕으로 공정한 오목 게임이 가능합니다.
+     Since. 2017.06.19
+     @version 1.0
+     @author Kyuhyun Shin <blgf6190@gmail.com>
+     @author Taeyoung Lee <taey3279@gmail.com>
+     @author Jinho Um <wls3316@naver.com>
+   -->
+
+  <!-- ================================== HEAD 시작 =================================  -->
+<div th:fragment="omokFragment" class = "hidden" id="board">
+    <!-- ============================== JS Script 시작 ==============================  -->
+    <!-- 게임 코어 자바 스크립트 로직 -->
+   
+    <link rel="stylesheet" type="text/css" th:href="@{/css/omok.css}">
+
+    <!-- =============================== CSS Style 끝 ===============================  -->
+  <!-- =================================== HEAD 끝 ==================================  -->
+  <!-- ================================== BODY 시작 =================================  -->
+    <div class="top"><h1 align="center">오목</h1></div>
+    <div class="layout">
+      <div class="left">
+	<div style="margin:30px;">
+	  <!-- 	  게임판 출력용 HTML5 Canvas 선언 -->
+          <canvas id="mycanvas" width="640" height="640"></canvas>
+	</div>
+      </div>
+      <div class="right">
+	<div class="boxframe">
+          <div class=box>
+	    <form>
+	      <input id="blackfirst" type="radio" name="who_first" value="black" checked  />
+	      흑 선수<br>
+	      <input id="whitefirst" type="radio" name="who_first" value="white" />
+	      백 선수
+	      <input id="back_button" type="button" class="btn yellow small text-color-reverse" value="무르기" />
+	    </form>
+	  </div>
+	  <div class=box2>
+	    <input id="start_button" type="button" class="btn blue" value="시 작" />
+	  </div>
+          <div class=box3>
+	    <input id="retire_button" type="button" class="btn gray" value="기 권" />
+	  </div>
+          <div class=box4>
+	    <!-- 	    게임 로그 출력용 textarea -->
+	    <textarea name="gamelog" rows="19" cols="35" readonly></textarea>
+	  </div>
+          <div class=box5>
+	    <input id="exit_button" type="button" class="btn red" value="종 료" />
+	  </div>
+	</div>
+      </div>
+    </div>
+  <!-- =================================== BODY 끝 ==================================  -->
+  	<script defer th:src="@{/js/omok.js}"></script>
+</div>
