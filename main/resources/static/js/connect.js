@@ -74,6 +74,22 @@ function sendRespond(receiver, ok) {
 	}
 }
 
+function sendRoomId(receiver, roomId) {
+	alert('sendRoomId');
+	var o = { 'title': 'roomId', 'roomId': roomId };
+	if (stompClient) {
+		var chatMessage = {
+			sender: username,
+			content: JSON.stringify(o),
+			type: 'CHAT',
+			receiver: receiver
+		}
+
+		stompClient.send("/app/chat.send", {}, JSON.stringify(chatMessage));
+
+	}
+}
+
 function send(event) {
 	//  var messageContent = messageInput.value.trim();
 	console.log(event);
@@ -112,27 +128,41 @@ function onMessageReceived(payload) {
 
 	} else {
 		var content = JSON.parse(message.content);
-		var ok = 0;
+		var ok = 1;
 		if (content.title === 'request') {
-			if (ok = confirm(message.sender + "와의 대국 하시겠습니까?")) {
+			// confirm 대체 품목.. 
+			if (ok) {
 				sendRespond(message.sender, ok);
-				location.href = "/home/omok"
-
 			}
 			else sendRespond(message.sender, ok);
 		} else if (content.title === 'respond') {
 			if (content.ok) {
-				location.href = "/home/omok"
-					
+				// create the room;
+				var params = new URLSearchParams();
+				params.append("name", username);
+				axios.post('/omok/create', params)
+					.then(
+						response => {
+							alert(response.data.roomName + "방 개설에 성공하였습니다.")
+							console.log(response.data.roomId);
+							sendRoomId(message.sender, response.data.roomId);
+
+							location.href = `/omok/room/enter/${response.data.roomId}`;
+						}
+					)
+					.catch(response => { alert(response); });
+
 			} else {
 				console.log('싱대가 거절');
 			}
 
+		} else if (content.title === 'roomId') {
+			location.href = `/omok/room/enter/${content.roomId}`;
 		} else {
 			console.log('not request, respond');
 		}
 
-		
+
 
 	}
 

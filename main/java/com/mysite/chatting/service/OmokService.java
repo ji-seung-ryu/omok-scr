@@ -8,8 +8,16 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
+import org.springframework.stereotype.Service;
+
 import com.mysite.chatting.model.OmokRoom;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+@Service
+@Slf4j
+@RequiredArgsConstructor
 public class OmokService {
 	private Map<String, OmokRoom> omokRooms;
 
