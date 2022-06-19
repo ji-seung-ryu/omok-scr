@@ -16,7 +16,7 @@
 				<div class="card rounded-3">
 					<div class="card-body p-4">
 
-						<h4 class="text-center my-3 pb-3 ${username}">  UserList</h4>
+						<h4 class="text-center my-3 pb-3" th:text="${username} + ' userList'"> </h4>
 
 						<table class="table mb-4" id="userTable">
 							<thead>
@@ -29,25 +29,13 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr>
-									<td scope="row">Buy groceries for next week</td>
-									<td>active</td>
-									<td><button id='playBtn'>play with</button></td>
-
+								<tr th:each = "user : ${userList}">
+									<td th:text="${user.name}"></td>
+									<td th:text="${user.status}"></td>
+									<td><button id='playBtn' th:class = "${user.name}">play with</button></td>
+									
 								</tr>
-								<tr>
-									<td scope="row">Renew car insurance</td>
-									<td>active</td>
-									<td><button id='playBtn'>play with</button></td>
-
-
-								</tr>
-								<tr>
-									<td scope="row">Sign up for online course</td>
-									<td>active</td>
-									<td><button id='playBtn'>play with</button></td>
-
-								</tr>
+							
 							</tbody>
 						</table>
 
@@ -56,6 +44,15 @@
 			</div>
 		</div>
 	</div>
+	<script th:inline="javascript">
+    
+    /*<![CDATA[*/
+    
+    var username = /*[[${username}]]*/ 'default';
+    
+    /*]]>*/
+    
+	</script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.0.0-alpha.1/axios.min.js" integrity="sha512-xIPqqrfvUAc/Cspuj7Bq0UtHNo/5qkdyngx6Vwt+tmbvTLDszzXM0G6c91LXmGrRx8KEPulT+AfOOez+TeVylg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 	<script
 		src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.4/sockjs.min.js"></script>

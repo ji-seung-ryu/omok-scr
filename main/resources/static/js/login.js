@@ -2,7 +2,6 @@ function connect(event) {
     username = document.querySelector('#name').value.trim();
 
     if(username) {
-		localStorage.setItem('username', username);
 		var params = new URLSearchParams();
 		params.append("name", username);
 		axios.post('/login', params)

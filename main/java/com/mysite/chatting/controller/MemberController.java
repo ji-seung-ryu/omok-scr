@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mysite.chatting.model.Member;
+import com.mysite.chatting.model.Member.statusType;
 import com.mysite.chatting.service.MemberService;
 
 import lombok.RequiredArgsConstructor;
@@ -38,9 +39,16 @@ public class MemberController {
 		System.out.println(userId);
 		System.out.println(memberService.findById(userId).getName());
 		model.addAttribute("username", memberService.findById(userId).getName());
+		model.addAttribute("userList", memberService.findAllMember());
 		return "userList";
 	}
 
-	
+	@PostMapping("/home/userList")
+	public String changeStatus (Model model, @RequestParam String userId ) {
+		memberService.changeStatusById(userId, statusType.INACTIVE);
+		model.addAttribute("username", memberService.findById(userId).getName());
+		model.addAttribute("userList", memberService.findAllMember());
+		return "userList";
+	}
 
 }

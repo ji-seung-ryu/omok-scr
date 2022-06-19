@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.mysite.chatting.model.Member;
 import com.mysite.chatting.model.OmokRoom;
 import com.mysite.chatting.service.OmokService;
 
@@ -36,7 +37,9 @@ public class OmokController {
     }
     // 채팅방 입장 화면
     @GetMapping("/room/enter/{roomId}")
-    public String roomDetail(Model model, @PathVariable String roomId) {
+    public String roomDetail(Model model, @PathVariable String roomId  , @RequestParam String username) {
+    	List <String> memberList = omokService.enterRoomById(roomId, username);
+    	model.addAttribute("memberList", memberList);
         model.addAttribute("roomId", roomId);
         return "omok";
     }

@@ -19,7 +19,7 @@
     <!-- =============================== CSS Style 끝 ===============================  -->
   <!-- =================================== HEAD 끝 ==================================  -->
   <!-- ================================== BODY 시작 =================================  -->
-    <div class="top"><h1 align="center">오목</h1></div>
+    <div class="top"><tr align="center" th:each ="username: ${memberList}" ><td th:text = "${username}" > </td> </tr></div>
     <div class="layout">
       <div class="left">
 	<div style="margin:30px;">

@@ -27,10 +27,8 @@ public class MemberService {
 		members = new LinkedHashMap<>();
 	}
 
-	public List<Member> findAllRoom(){
+	public List<Member> findAllMember(){
 		List<Member> result = new ArrayList<>(members.values());
-		Collections.reverse(result);
-
 		return result;
 	}
 	

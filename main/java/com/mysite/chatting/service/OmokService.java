@@ -42,4 +42,9 @@ public class OmokService {
 		omokRooms.put(omokRoom.getRoomId(), omokRoom);
 		return omokRoom;
 	}
+	
+	public List<String> enterRoomById (String roomId, String username){
+		OmokRoom omokRoom = omokRooms.get(roomId);
+		return omokRoom.enter(username);	
+	}
 }

@@ -9,7 +9,6 @@ var messageArea = document.querySelector('#messageArea');
 var connectingElement = document.querySelector('.connecting');
 
 var stompClient = null;
-var username = localStorage.getItem('username');
 
 var colors = [
 	'#2196F3', '#32c787', '#00BCD4', '#ff5652',
@@ -111,17 +110,26 @@ function send(event) {
 	event.preventDefault();
 }
 
-
+function statusChange(){
+	axios.post(location.href)
+					.then(
+						response => {
+							alert(response);
+						
+						}
+					)
+					.catch(response => { alert(response); });
+}
 function onMessageReceived(payload) {
 	var message = JSON.parse(payload.body);
 
 
 	if (message.type === 'JOIN') {
 		message.content = message.sender + ' joined!';
-		if (message.sender === username) setMember(message.members);
-		else addMember(message.sender);
+	//	if (message.sender === username) setMember(message.members);
+		//else addMember(message.sender);
 	} else if (message.type === 'LEAVE') {
-		deleteMember(message.sender);
+	//	deleteMember(message.sender);
 
 
 
@@ -130,6 +138,7 @@ function onMessageReceived(payload) {
 		var content = JSON.parse(message.content);
 		var ok = 1;
 		if (content.title === 'request') {
+			console.log ('get request');
 			// confirm 대체 품목.. 
 			if (ok) {
 				sendRespond(message.sender, ok);
@@ -137,6 +146,7 @@ function onMessageReceived(payload) {
 			else sendRespond(message.sender, ok);
 		} else if (content.title === 'respond') {
 			if (content.ok) {
+				console.log ('create the room..');
 				// create the room;
 				var params = new URLSearchParams();
 				params.append("name", username);
@@ -146,8 +156,8 @@ function onMessageReceived(payload) {
 							alert(response.data.roomName + "방 개설에 성공하였습니다.")
 							console.log(response.data.roomId);
 							sendRoomId(message.sender, response.data.roomId);
-							statusChange(username, 'playing omok');
-							location.href = `/omok/room/enter/${response.data.roomId}`;
+							statusChange(); 
+							location.href = `/omok/room/enter/${response.data.roomId}?username=${username}`;
 						}
 					)
 					.catch(response => { alert(response); });
@@ -157,8 +167,8 @@ function onMessageReceived(payload) {
 			}
 
 		} else if (content.title === 'roomId') {
-			statusChange(username, 'playing omok');
-			location.href = `/omok/room/enter/${content.roomId}`;
+			statusChange();
+			location.href = `/omok/room/enter/${content.roomId}?username=${username}`;
 		} else {
 			console.log('not request, respond');
 		}
