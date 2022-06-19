@@ -3,7 +3,19 @@ function connect(event) {
 
     if(username) {
 		localStorage.setItem('username', username);
-		location.href = "/home/userList";
+		var params = new URLSearchParams();
+		params.append("name", username);
+		axios.post('/login', params)
+					.then(
+						response => {
+							console.log (response.data);
+							var userParams = new URLSearchParams();
+							userParams.append("userId", response.data.userId);
+							location.href = '/home/userList?' + userParams; 
+							}
+					)
+					.catch(response => { alert(response); });
+		
     }
     event.preventDefault();
 }

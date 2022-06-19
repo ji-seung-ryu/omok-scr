@@ -146,7 +146,7 @@ function onMessageReceived(payload) {
 							alert(response.data.roomName + "방 개설에 성공하였습니다.")
 							console.log(response.data.roomId);
 							sendRoomId(message.sender, response.data.roomId);
-
+							statusChange(username, 'playing omok');
 							location.href = `/omok/room/enter/${response.data.roomId}`;
 						}
 					)
@@ -157,6 +157,7 @@ function onMessageReceived(payload) {
 			}
 
 		} else if (content.title === 'roomId') {
+			statusChange(username, 'playing omok');
 			location.href = `/omok/room/enter/${content.roomId}`;
 		} else {
 			console.log('not request, respond');
@@ -185,4 +186,4 @@ function disConnect() {
 }
 
 connect();
-window.addEventListener('beforeunload', disConnect, true);
+//window.addEventListener('beforeunload', disConnect, true);

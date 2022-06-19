@@ -64,8 +64,5 @@ public class ChatController {
 	}
 	
 	
-	@GetMapping("/omok")
-	public String omok() {
-		return "omok";
-	}
+	
 }
