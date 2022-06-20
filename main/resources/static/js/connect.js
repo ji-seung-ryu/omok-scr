@@ -31,11 +31,13 @@ function onConnected() {
 
 	// Tell your username to the server
 
-	stompClient.send("/app/chat.register",
-		{},
-		JSON.stringify({ sender: username, receiver: username, type: 'JOIN' })
-	)
+	if (!already) {
 
+		stompClient.send("/app/chat.register",
+			{},
+			JSON.stringify({ sender: username, receiver: username, type: 'JOIN' })
+		)
+	}
 }
 
 
@@ -110,26 +112,28 @@ function send(event) {
 	event.preventDefault();
 }
 
-function statusChange(){
+function statusChange() {
 	axios.post(location.href)
-					.then(
-						response => {
-							alert(response);
-						
-						}
-					)
-					.catch(response => { alert(response); });
+		.then(
+			response => {
+				alert(response);
+
+			}
+		)
+		.catch(response => { alert(response); });
 }
 function onMessageReceived(payload) {
 	var message = JSON.parse(payload.body);
 
 
 	if (message.type === 'JOIN') {
+		if (message.sender !== username) location.reload();
 		message.content = message.sender + ' joined!';
-	//	if (message.sender === username) setMember(message.members);
+
+		//	if (message.sender === username) setMember(message.members);
 		//else addMember(message.sender);
 	} else if (message.type === 'LEAVE') {
-	//	deleteMember(message.sender);
+		//	deleteMember(message.sender);
 
 
 
@@ -138,7 +142,7 @@ function onMessageReceived(payload) {
 		var content = JSON.parse(message.content);
 		var ok = 1;
 		if (content.title === 'request') {
-			console.log ('get request');
+			console.log('get request');
 			// confirm 대체 품목.. 
 			if (ok) {
 				sendRespond(message.sender, ok);
@@ -146,7 +150,7 @@ function onMessageReceived(payload) {
 			else sendRespond(message.sender, ok);
 		} else if (content.title === 'respond') {
 			if (content.ok) {
-				console.log ('create the room..');
+				console.log('create the room..');
 				// create the room;
 				var params = new URLSearchParams();
 				params.append("name", username);
@@ -156,7 +160,7 @@ function onMessageReceived(payload) {
 							alert(response.data.roomName + "방 개설에 성공하였습니다.")
 							console.log(response.data.roomId);
 							sendRoomId(message.sender, response.data.roomId);
-							statusChange(); 
+							statusChange();
 							location.href = `/omok/room/enter/${response.data.roomId}?username=${username}`;
 						}
 					)

@@ -24,15 +24,15 @@ import com.mysite.chatting.service.ChatService;
 public class ChatController {
 
 	private final SimpMessagingTemplate simpMessagingTemplate;	
-	private Vector<String> members = new Vector<String>();  
+//	private Vector<String> members = new Vector<String>();  
 	
 	@MessageMapping("/chat.register")
 	@SendTo("/topic/public")
 	public ChatMessage register(@Payload ChatMessage chatMessage, SimpMessageHeaderAccessor headerAccessor) {
 	
 		headerAccessor.getSessionAttributes().put("username", chatMessage.getSender());
-		members.add(chatMessage.getSender());
-		chatMessage.setMembers(members);
+	//	members.add(chatMessage.getSender());
+	//	chatMessage.setMembers(members);
 		
 		return chatMessage;
 	}
@@ -48,8 +48,8 @@ public class ChatController {
 	@SendTo("/topic/public")
 	public ChatMessage leave(@Payload ChatMessage chatMessage) {
 		
-		members.remove(chatMessage.getSender());
-		chatMessage.setMembers(members);
+//		members.remove(chatMessage.getSender());
+	//	chatMessage.setMembers(members);
 		
 		System.out.println("leave call!");
 		return chatMessage;
