@@ -31,13 +31,12 @@ function onConnected() {
 
 	// Tell your username to the server
 
-	if (!already) {
 
-		stompClient.send("/app/chat.register",
-			{},
-			JSON.stringify({ sender: username, receiver: username, type: 'JOIN' })
-		)
-	}
+	stompClient.send("/app/chat.register",
+		{},
+		JSON.stringify({ sender: username, receiver: username, type: 'JOIN' })
+	)
+
 }
 
 
@@ -91,26 +90,7 @@ function sendRoomId(receiver, roomId) {
 	}
 }
 
-function send(event) {
-	//  var messageContent = messageInput.value.trim();
-	console.log(event);
-	console.log(typeof (event));
-	var e = new Object({ "offsetX": event.offsetX, "offsetY": event.offsetY });
 
-	console.log(e);
-
-	if (stompClient) {
-		var chatMessage = {
-			sender: username,
-			content: JSON.stringify(e),
-			type: 'CHAT'
-		};
-
-		stompClient.send("/app/chat.send", {}, JSON.stringify(chatMessage));
-		// messageInput.value = '';
-	}
-	event.preventDefault();
-}
 
 function statusChange() {
 	axios.post(location.href)
@@ -127,7 +107,7 @@ function onMessageReceived(payload) {
 
 
 	if (message.type === 'JOIN') {
-		if (message.sender !== username) location.reload();
+		if (message.sender !== username) addMember(message.sender);
 		message.content = message.sender + ' joined!';
 
 		//	if (message.sender === username) setMember(message.members);

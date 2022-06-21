@@ -39,6 +39,13 @@ public class OmokController {
     @GetMapping("/room/enter/{roomId}")
     public String roomDetail(Model model, @PathVariable String roomId  , @RequestParam String username) {
     	List <String> memberList = omokService.enterRoomById(roomId, username);
+    	if (memberList.size() == 2) {
+    		if (memberList.get(0) != username) model.addAttribute("opponent", memberList.get(0));
+    		else model.addAttribute("opponent", memberList.get(1));
+    	}
+    	else model.addAttribute("opponent", null);
+    	
+    	model.addAttribute("username", username);
     	model.addAttribute("memberList", memberList);
         model.addAttribute("roomId", roomId);
         return "omok";

@@ -8,7 +8,7 @@ function addMember(username){
 	const newCell3 = newRow.insertCell(2);
 	
 	newCell1.innerText = username;
-	newCell2.innerText = "active";
+	newCell2.innerText = "ACTIVE";
 	newCell3.innerHTML = `<button class = '${username}' id='playBtn'>play with</button>`;
 }
 

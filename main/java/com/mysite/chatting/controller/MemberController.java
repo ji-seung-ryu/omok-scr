@@ -43,12 +43,7 @@ public class MemberController {
 		System.out.println(userId);
 		System.out.println(memberService.findById(userId).getName());
 		
-		// 이 전에도 방문이 있었다면.. 세션으로 하는게 유리하겠구나 로그아웃까지 생각하면 
 		
-		if (memberService.findById(userId).getStatus() == statusType.ACTIVE) {
-			model.addAttribute("already",true);
-		}
-		// 세션이 있다면 model.addAttribute로 체크 
 		
 		model.addAttribute("username", memberService.findById(userId).getName());
 		model.addAttribute("userList", memberService.findAllMember());

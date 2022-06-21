@@ -1,8 +1,6 @@
 package com.mysite.chatting.controller;
 
-import java.util.Vector;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -12,12 +10,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.mysite.chatting.model.ChatMessage;
+import com.mysite.chatting.model.OmokMessage;
 
 import lombok.NonNull;
 import lombok.Setter;
 import lombok.RequiredArgsConstructor;
 
-import com.mysite.chatting.service.ChatService;
 
 @Controller
 @RequiredArgsConstructor
@@ -63,6 +61,21 @@ public class ChatController {
 		return chatMessage;
 	}
 	
+	@MessageMapping("/omok.register")
+	@SendTo("/topic/omok")
+	public OmokMessage register(@Payload OmokMessage omokMessage, SimpMessageHeaderAccessor headerAccessor) {
 	
+		headerAccessor.getSessionAttributes().put("username", omokMessage.getSender());
+	//	members.add(chatMessage.getSender());
+	//	chatMessage.setMembers(members);
+		
+		return omokMessage;
+	}
 	
+	@MessageMapping("/omok.put")
+	@SendTo("topic/omok")
+	public void sendMessage(@Payload OmokMessage omokMessage) {
+		simpMessagingTemplate.convertAndSend("/topic/omok/"+ omokMessage.getReceiver(), omokMessage);
+	//	return chatMessage;
+	}
 }
