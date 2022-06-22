@@ -149,7 +149,7 @@
      function put_stone(e){
 	 if(!is_gamestart()) // 게임이 진행중이지 않을경우
 	     return;
-	
+	if (!myTurn) return;
 	
 	 var x = 0;
 	 var y = 0;
@@ -230,6 +230,7 @@
 	     // 보드판 재 표시
 	     print_board(board);
 	     send(e);
+	     myTurn != myTurn;
 	 }
      }
      // 무르기 루틴

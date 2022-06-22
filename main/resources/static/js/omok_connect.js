@@ -56,6 +56,9 @@ function onMessageReceived(payload) {
 		if (message.sender != username) opponent = message.sender; 
 		console.log (message.sender + "joined!!"); 
 		
+		if (message.members[0] == username) myTurn = 1;
+		else myTurn = 0; 
+		
 		message.members.forEach((member) =>{
 			if (member != username) opponent = member;
 		} )
@@ -65,6 +68,7 @@ function onMessageReceived(payload) {
 		//	deleteMember(message.sender);
 
 	} else if (message.type === 'PUT'){
+		myTurn != myTurn;
 		var content = JSON.parse(message.content);
 		console.log (content);
 		if (message.sender != username) put_stone(content);		

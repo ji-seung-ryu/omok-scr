@@ -47,8 +47,7 @@ public class OmokController {
 	@MessageMapping("/omok.put")
 	@SendTo("topic/omok")
 	public void sendMessage(@Payload OmokMessage omokMessage) {
-		if (omokMessage.getSender() != omokService.getTurn(omokMessage.getRoomId())) return; 
-		//set turn도 해야함 .. 
+		System.out.println("turn: "+ omokService.getTurn(omokMessage.getRoomId()));
 		omokMessage.setMembers(omokService.roomInfo(omokMessage.getRoomId()));
 		simpMessagingTemplate.convertAndSend("/topic/omok/"+ omokMessage.getRoomId(), omokMessage);
 	//	return chatMessage;
