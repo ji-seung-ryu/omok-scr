@@ -61,21 +61,5 @@ public class ChatController {
 		return chatMessage;
 	}
 	
-	@MessageMapping("/omok.register")
-	@SendTo("/topic/omok")
-	public OmokMessage register(@Payload OmokMessage omokMessage, SimpMessageHeaderAccessor headerAccessor) {
 	
-		headerAccessor.getSessionAttributes().put("username", omokMessage.getSender());
-	//	members.add(chatMessage.getSender());
-	//	chatMessage.setMembers(members);
-		
-		return omokMessage;
-	}
-	
-	@MessageMapping("/omok.put")
-	@SendTo("topic/omok")
-	public void sendMessage(@Payload OmokMessage omokMessage) {
-		simpMessagingTemplate.convertAndSend("/topic/omok/"+ omokMessage.getReceiver(), omokMessage);
-	//	return chatMessage;
-	}
 }

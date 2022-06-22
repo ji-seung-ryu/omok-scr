@@ -11,7 +11,7 @@
 
      var board;                        // 판 상태 2차원 배열
      var board_stack = new Array();    // 판 착수 순서 스택
-
+	
      var stone_black_color = "black";  // 흑돌 출력용 CSS 색깔 문자열
      var stone_white_color = "white";  // 백돌 출력용 CSS 색깔 문자열
 

@@ -1,5 +1,7 @@
 package com.mysite.chatting.model;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 public class OmokMessage {
@@ -8,7 +10,7 @@ public class OmokMessage {
 	private String receiver;
 	private String roomId; 
 	private MessageType type;
-	private Vector<String> members = new Vector<String>();  
+	private List<String> members = new ArrayList<String>();  
 
 	public enum MessageType {
 		PUT, JOIN, LEAVE;
@@ -53,11 +55,13 @@ public class OmokMessage {
 		this.type = type;
 	}
 
-	public Vector<String> getMembers(){
+	public List<String> getMembers(){
 		return members;
 	}
 	
-	public void setMembers(Vector<String> members) {
+	public void setMembers(List<String> members) {
 		this.members = members;
 	}
+	
+
 }

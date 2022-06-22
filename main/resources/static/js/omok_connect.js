@@ -1,6 +1,7 @@
 var stompClient = null;
 
 function connect() {
+	console.log (omokRoomId);
 	if (username) {
 		var socket = new SockJS('/javatechie');
 		stompClient = Stomp.over(socket);
@@ -10,7 +11,7 @@ function connect() {
 }
 
 function onConnected() {
-	stompClient.subscribe('/topic/omok', onMessageReceived);
+	stompClient.subscribe('/topic/omok/' + omokRoomId , onMessageReceived);
 	stompClient.subscribe('/topic/omok/' + username, onMessageReceived);
 
 	// Tell your username to the server
@@ -18,7 +19,7 @@ function onConnected() {
 
 	stompClient.send("/app/omok.register",
 		{},
-		JSON.stringify({ sender: username, receiver: username, type: 'JOIN' })
+		JSON.stringify({ sender: username, receiver: username, roomId: omokRoomId, type: 'JOIN' })
 	)
 
 }
@@ -37,6 +38,7 @@ function send(event) {
 		var chatMessage = {
 			sender: username,
 			receiver: opponent,
+			roomId: omokRoomId,
 			content: JSON.stringify(o),
 			type: 'PUT'
 		};
@@ -44,7 +46,6 @@ function send(event) {
 		stompClient.send("/app/omok.put", {}, JSON.stringify(chatMessage));
 		// messageInput.value = '';
 	}
-	event.preventDefault();
 }
 
 function onMessageReceived(payload) {
@@ -52,6 +53,13 @@ function onMessageReceived(payload) {
 
 
 	if (message.type === 'JOIN') {
+		if (message.sender != username) opponent = message.sender; 
+		console.log (message.sender + "joined!!"); 
+		
+		message.members.forEach((member) =>{
+			if (member != username) opponent = member;
+		} )
+		console.log(message.members);
 		alert(message.sender +"joined!!");
 	} else if (message.type === 'LEAVE') {
 		//	deleteMember(message.sender);
@@ -59,7 +67,7 @@ function onMessageReceived(payload) {
 	} else if (message.type === 'PUT'){
 		var content = JSON.parse(message.content);
 		console.log (content);
-		put_stone(content);		
+		if (message.sender != username) put_stone(content);		
 		
 
 
