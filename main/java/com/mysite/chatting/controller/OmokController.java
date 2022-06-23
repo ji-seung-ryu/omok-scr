@@ -35,7 +35,6 @@ public class OmokController {
 	public void register(@Payload OmokMessage omokMessage, SimpMessageHeaderAccessor headerAccessor) {
 	
 		headerAccessor.getSessionAttributes().put("username", omokMessage.getSender());
-		System.out.println("/topic/omok/"+ omokMessage.getRoomId());
 		omokMessage.setMembers(omokService.roomInfo(omokMessage.getRoomId()));
 		simpMessagingTemplate.convertAndSend("/topic/omok/"+ omokMessage.getRoomId(), omokMessage);
 
@@ -47,8 +46,7 @@ public class OmokController {
 	@MessageMapping("/omok.put")
 	@SendTo("topic/omok")
 	public void sendMessage(@Payload OmokMessage omokMessage) {
-		System.out.println("turn: "+ omokService.getTurn(omokMessage.getRoomId()));
-		omokMessage.setMembers(omokService.roomInfo(omokMessage.getRoomId()));
+ 		omokMessage.setMembers(omokService.roomInfo(omokMessage.getRoomId()));
 		simpMessagingTemplate.convertAndSend("/topic/omok/"+ omokMessage.getRoomId(), omokMessage);
 	//	return chatMessage;
 	}

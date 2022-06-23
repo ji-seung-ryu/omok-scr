@@ -1,7 +1,6 @@
 var stompClient = null;
 
 function connect() {
-	console.log (omokRoomId);
 	if (username) {
 		var socket = new SockJS('/javatechie');
 		stompClient = Stomp.over(socket);
@@ -54,25 +53,22 @@ function onMessageReceived(payload) {
 
 	if (message.type === 'JOIN') {
 		if (message.sender != username) opponent = message.sender; 
-		console.log (message.sender + "joined!!"); 
 		
 		if (message.members[0] == username) myTurn = 1;
 		else myTurn = 0; 
 		
+		if (myTurn) alert(username+ "님이 흑입니다.");
+		else alert(username+"님이 백입니다.");
+		
 		message.members.forEach((member) =>{
 			if (member != username) opponent = member;
 		} )
-		console.log(message.members);
-		alert(message.sender +"joined!!");
 	} else if (message.type === 'LEAVE') {
 		//	deleteMember(message.sender);
 
 	} else if (message.type === 'PUT'){
-		myTurn != myTurn;
 		var content = JSON.parse(message.content);
-		console.log (content);
-		if (message.sender != username) put_stone(content);		
-		
+		if (message.sender != username) draw_stone(content);		
 
 
 
