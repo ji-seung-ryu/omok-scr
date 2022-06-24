@@ -93,6 +93,7 @@ function sendRoomId(receiver, roomId) {
 
 
 function statusChange() {
+	
 	axios.post(location.href)
 		.then(
 			response => {
@@ -107,7 +108,16 @@ function onMessageReceived(payload) {
 
 
 	if (message.type === 'JOIN') {
-		if (message.sender !== username) addMember(message.sender);
+		if (message.sender !== username) {
+			var duplicate = 0; 
+			userList.forEach((member) => {
+				if (member == message.sender) duplicate = 1;
+			})
+			
+			if (duplicate == 0) addMember(message.sender); 
+			//이미 있는 경우는 status만 변경해준다. 
+			
+		}
 		message.content = message.sender + ' joined!';
 
 		//	if (message.sender === username) setMember(message.members);

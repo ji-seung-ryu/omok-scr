@@ -227,6 +227,11 @@
 	     }
 	     // 보드판 재 표시
 	     print_board(board);
+	     if(!is_gamestart()) // 게임이 진행중이지 않을경우
+	     {
+		alert(username + '패배');
+		history.go(-1);
+	}
 	     myTurn = !myTurn;
 	 }
      }
@@ -316,6 +321,11 @@
 	     // 보드판 재 표시
 	     print_board(board);
 	     send(e);
+	     if(!is_gamestart()) // 게임이 진행중이지 않을경우
+	     {
+		alert(username + '승리');
+		history.go(-1);
+	}
 	     myTurn = !myTurn;
 	 }
      }

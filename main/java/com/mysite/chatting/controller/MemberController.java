@@ -42,9 +42,9 @@ public class MemberController {
 		
 		System.out.println(userId);
 		System.out.println(memberService.findById(userId).getName());
-		
-		
-		
+				
+		memberService.changeStatusById(userId, statusType.ACTIVE);
+
 		model.addAttribute("username", memberService.findById(userId).getName());
 		model.addAttribute("userList", memberService.findAllMember());
 		return "userList";
