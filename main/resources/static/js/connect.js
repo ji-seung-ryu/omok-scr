@@ -109,13 +109,13 @@ function onMessageReceived(payload) {
 
 	if (message.type === 'JOIN') {
 		if (message.sender !== username) {
+			console.log (userList);
 			var duplicate = 0; 
 			userList.forEach((member) => {
-				if (member == message.sender) duplicate = 1;
+				if (member.name == message.sender) duplicate = 1;
 			})
 			
 			if (duplicate == 0) addMember(message.sender); 
-			//이미 있는 경우는 status만 변경해준다. 
 			
 		}
 		message.content = message.sender + ' joined!';
@@ -133,6 +133,7 @@ function onMessageReceived(payload) {
 		var ok = 1;
 		if (content.title === 'request') {
 			console.log('get request');
+			
 			// confirm 대체 품목.. 
 			if (ok) {
 				sendRespond(message.sender, ok);

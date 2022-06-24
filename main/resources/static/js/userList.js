@@ -47,11 +47,28 @@ function statusChange (username, status){
 	}
 }
 
+function getStatus (username){
+	const table = document.getElementById('userTable');
+
+	const tbody = table.getElementsByTagName("tbody")[0];
+	
+	const trs = tbody.getElementsByTagName("tr");
+	
+	var ret = null; 
+	
+	for (var i=0;i<trs.length;i++){
+		if(username === trs[i].getElementsByTagName("td")[0].innerText ) ret = trs[i].getElementsByTagName("td")[1].innerText;
+		
+	}
+	return ret; 
+}
+
 document.addEventListener('click',function(e){
     if(e.target && e.target.id== 'playBtn'){
 	if (e.target.className == username) alert('can not play alone!');
 	else{
-		sendRequest(e.target.className);
+		if (getStatus(e.target.className) == 'ACTIVE') sendRequest(e.target.className);
+		else alert('can not play INACTIVE player!');
 	}
 	
      }
