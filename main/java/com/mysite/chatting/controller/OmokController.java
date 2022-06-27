@@ -21,6 +21,10 @@ import com.mysite.chatting.model.OmokMessage;
 import com.mysite.chatting.model.OmokRoom;
 import com.mysite.chatting.service.OmokService;
 
+import org.json.simple.JSONObject;
+import org.json.simple.JSONArray;
+import org.json.simple.parser.ParseException; // 예외처리
+import org.json.simple.parser.JSONParser;
 import lombok.RequiredArgsConstructor;
 
 @RequestMapping("/omok")
@@ -28,60 +32,89 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class OmokController {
 	private final OmokService omokService;
-	private final SimpMessagingTemplate simpMessagingTemplate;	
+	private final SimpMessagingTemplate simpMessagingTemplate;
 
 	@MessageMapping("/omok.register")
 	@SendTo("/topic/omok")
 	public void register(@Payload OmokMessage omokMessage, SimpMessageHeaderAccessor headerAccessor) {
-	
+
 		headerAccessor.getSessionAttributes().put("username", omokMessage.getSender());
 		omokMessage.setMembers(omokService.roomInfo(omokMessage.getRoomId()));
-		simpMessagingTemplate.convertAndSend("/topic/omok/"+ omokMessage.getRoomId(), omokMessage);
+		simpMessagingTemplate.convertAndSend("/topic/omok/" + omokMessage.getRoomId(), omokMessage);
 
-	//	members.add(chatMessage.getSender());
-	//	chatMessage.setMembers(members);
-		
+		// members.add(chatMessage.getSender());
+		// chatMessage.setMembers(members);
+
 	}
-	
+
 	@MessageMapping("/omok.put")
 	@SendTo("topic/omok")
 	public void sendMessage(@Payload OmokMessage omokMessage) {
- 		omokMessage.setMembers(omokService.roomInfo(omokMessage.getRoomId()));
-		simpMessagingTemplate.convertAndSend("/topic/omok/"+ omokMessage.getRoomId(), omokMessage);
-	//	return chatMessage;
+		omokMessage.setMembers(omokService.roomInfo(omokMessage.getRoomId()));
+		
+		try {
+			JSONParser parser = new JSONParser();
+			JSONObject parsedJson = (JSONObject) parser.parse(omokMessage.getContent());
+			
+			System.out.println(parsedJson);
+			int y = Integer.parseInt(String.valueOf(parsedJson.get("Y")));
+			int x = Integer.parseInt(String.valueOf(parsedJson.get("X")));
+			int turn = Integer.parseInt(String.valueOf(parsedJson.get("Turn")));
+			
+			
+			omokService.setBoard(y,x,turn,omokMessage.getRoomId());
+			
+			
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		
+		// int(parsedJson.get("turn")), omokMessage.getRoomId());
+
+		simpMessagingTemplate.convertAndSend("/topic/omok/" + omokMessage.getRoomId(), omokMessage);
+		// return chatMessage;
 	}
-	
-    // 모든 채팅방 목록 반환
-    @GetMapping("/rooms")
-    @ResponseBody
-    public List<OmokRoom> room() {
-        return omokService.findAllRoom();
-    }
-    // 채팅방 생성
-    @PostMapping("/create")
-    @ResponseBody
-    public OmokRoom createRoom(@RequestParam String name) {
-        return omokService.createRoom(name);
-    }
-    // 채팅방 입장 화면
-    @GetMapping("/room/enter/{roomId}")
-    public String roomDetail(Model model, @PathVariable String roomId  , @RequestParam String username) {
-    	List <String> memberList = omokService.enterRoomById(roomId, username);
-    	if (memberList.size() == 2) {
-    		model.addAttribute("opponent", memberList.get(0));
-    		System.out.println(username+"의 적은 "+memberList.get(0));
-    	}
-    	else model.addAttribute("opponent", null);
-    	
-    	model.addAttribute("username", username);
-    	model.addAttribute("memberList", memberList);
-        model.addAttribute("omokRoomId", roomId);
-        return "omok";
-    }
-    // 특정 채팅방 조회
-    @GetMapping("/room/{roomId}")
-    @ResponseBody
-    public OmokRoom roomInfo(@PathVariable String roomId) {
-        return omokService.findById(roomId);
-    }
+
+	// 모든 채팅방 목록 반환
+	@GetMapping("/rooms")
+	@ResponseBody
+	public List<OmokRoom> room() {
+		return omokService.findAllRoom();
+	}
+
+	// 채팅방 생성
+	@PostMapping("/create")
+	@ResponseBody
+	public OmokRoom createRoom(@RequestParam String name) {
+		return omokService.createRoom(name);
+	}
+
+	// 채팅방 입장 화면
+	@GetMapping("/room/enter/{roomId}")
+	public String roomDetail(Model model, @PathVariable String roomId, @RequestParam String username) {
+		omokService.enterRoomById(roomId, username);
+		List<String> memberList = omokService.getUserListById(roomId);
+		int[][] board = omokService.getBoard(roomId);
+
+		if (memberList.size() == 2) {
+			model.addAttribute("opponent", memberList.get(0));
+			System.out.println(username + "의 적은 " + memberList.get(0));
+		} else
+			model.addAttribute("opponent", null);
+
+		model.addAttribute("board", board);
+		model.addAttribute("username", username);
+		model.addAttribute("memberList", memberList);
+		model.addAttribute("omokRoomId", roomId);
+		return "omok";
+	}
+
+	// 특정 채팅방 조회
+	@GetMapping("/room/{roomId}")
+	@ResponseBody
+	public OmokRoom roomInfo(@PathVariable String roomId) {
+		return omokService.findById(roomId);
+	}
 }

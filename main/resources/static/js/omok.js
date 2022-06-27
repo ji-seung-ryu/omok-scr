@@ -9,7 +9,6 @@
      const CANVAS_MARGIN = 20;     // 캔버스 내 판 여백 값(px)
      const CANVAS_GAME_SIZE = CANVAS_SIZE - CANVAS_MARGIN*2; // 실제 판 크기(여백 뺀 값)
 
-     var board;                        // 판 상태 2차원 배열
      var board_stack = new Array();    // 판 착수 순서 스택
 	
      var stone_black_color = "black";  // 흑돌 출력용 CSS 색깔 문자열
@@ -121,8 +120,8 @@
 	 document.getElementById("retire_button").disabled = false;
 	 document.getElementById("blackfirst").disabled = true;
 	 document.getElementById("whitefirst").disabled = true;
-	 init_board();
-	 init_game();
+	// init_board();
+	// init_game();
 	 stroke_board();
 	 gamestart = true;
 	 gamestart_time = getTimeStamp();
@@ -146,46 +145,11 @@
 	 document.getElementById("whitefirst").disabled = false;
      };
      // 착수 루틴
-   function draw_stone(e){
+   function draw_stone(o){
 	 
+	var x = o.X;
+	var y = o.Y;
 	
-	 var x = 0;
-	 var y = 0;
-	 // 좌표계에서의 판 한칸 크기 저장용 변수
-	 var sz = (CANVAS_GAME_SIZE / (BOARD_SIZE-1));
-
-	 // 가장 가까운 교점에서 떨어진 좌표 오프셋 구하기
-	 var a = (e.offsetX - CANVAS_MARGIN) % sz;
-	 var b = (e.offsetY - CANVAS_MARGIN) % sz;
-
-	 // 가장 가까운 교점 좌표로 조정 시켜주는 로직
-	 if(a <= sz/2){
-	     x = e.offsetX - a - 1;
-	 }else{
-	     x = e.offsetX + (sz-a) - 1;
-	 }
-	 if(b <= sz/2){
-	     y = e.offsetY - b - 1;
-	 }else{
-	     y = e.offsetY + (sz-b) - 1;
-	 }
-
-	 // 소수점 반올림 처리
-	 x = Math.round(x / sz);
-	 y = Math.round(y / sz);
-
-	 // 판 넘어가기 방지용 루틴
-	 if(x > BOARD_SIZE)
-	     x = BOARD_SIZE;
-	 if(y > BOARD_SIZE)
-	     y = BOARD_SIZE;
-
-	 // 좌표계와 배열인덱스 차이 빼주기
-	 if(x-1 >= 0)
-	     x = x-1;
-	 if(y-1 >= 0)
-	     y = y-1;
-
 	 // 디버그 모드 비활성화 이면서 놓은 자리에 돌이 없을 경우
 	 if(!is_debugmode() && board[y][x] == STONE_NONE){
 		
@@ -321,7 +285,7 @@
 	     }
 	     // 보드판 재 표시
 	     print_board(board);
-	     send(e);
+	     send(y,x,blackturn);
 	     if(!is_gamestart()) // 게임이 진행중이지 않을경우
 	     {
 		alert(username + '승리');

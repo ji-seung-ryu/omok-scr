@@ -28,9 +28,12 @@ function onError(error) {
 	connectingElement.style.color = 'red';
 }
 
-function send(event) {
+function send(y,x, turn) {
 	//  var messageContent = messageInput.value.trim();
-	var o = new Object({ "offsetX": event.offsetX, "offsetY": event.offsetY });
+	if (turn == 0) turn = 2; 
+	else turn = 1;
+	
+	var o = new Object({ "Y": y, "X" : x ,"Turn" : turn});
 
 
 	if (stompClient) {

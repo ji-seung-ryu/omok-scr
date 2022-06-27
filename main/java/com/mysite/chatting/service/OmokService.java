@@ -46,9 +46,14 @@ public class OmokService {
 		return omokRooms.get(roomId).getMemberList();
 	}
 	
-	public List<String> enterRoomById (String roomId, String username){
+	public void enterRoomById (String roomId, String username){
 		OmokRoom omokRoom = omokRooms.get(roomId);
-		return omokRoom.enter(username);	
+		omokRoom.enter(username);	
+	}
+	
+	public List<String> getUserListById (String roomId){
+		OmokRoom omokRoom  = omokRooms.get(roomId);
+		return omokRoom.getMemberList(); 
 	}
 	
 	public String getTurn (String roomId) {
@@ -56,5 +61,15 @@ public class OmokService {
 		return omokRoom.getTurn(); 
 	}
 	
+	public int[][] getBoard (String roomId){
+		OmokRoom omokRoom = omokRooms.get(roomId);
+		return omokRoom.getBoard();
+	}
+	
+	public void setBoard (int y, int x, int turn, String roomId) {
+		OmokRoom omokRoom = omokRooms.get(roomId);
+		omokRoom.putStone(y,x,turn);
+		
+	}
 	
 }
