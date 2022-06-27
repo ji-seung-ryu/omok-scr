@@ -57,8 +57,10 @@ function onMessageReceived(payload) {
 		if (message.members[0] == username) myTurn = 1;
 		else myTurn = 0; 
 		
-		if (myTurn) alert(username+ "님이 흑입니다.");
-		else alert(username+"님이 백입니다.");
+		if (myTurn) {
+			bold_name(username);
+		}
+		else bold_name(opponent);
 		
 		message.members.forEach((member) =>{
 			if (member != username) opponent = member;

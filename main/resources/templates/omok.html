@@ -19,7 +19,7 @@
     <!-- =============================== CSS Style 끝 ===============================  -->
   <!-- =================================== HEAD 끝 ==================================  -->
   <!-- ================================== BODY 시작 =================================  -->
-    <div class="top"><tr align="center" th:each ="username: ${memberList}" ><td th:text = "${username}" > </td> </tr></div>
+    <div id = 'top' class="top"></div>
     <div class="layout">
       <div class="left">
 	<div style="margin:30px;">
@@ -62,6 +62,7 @@
     var username = /*[[${username}]]*/ 'default';
     var omokRoomId = /*[[${omokRoomId}]]*/ 'default';
     var opponent = /*[[${opponent}]]*/ 'default';
+    var memberList = /*[[${memberList}]]*/ 'default';
 	var myTurn;
     /*]]>*/
     

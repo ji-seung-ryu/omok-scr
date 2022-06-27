@@ -233,6 +233,7 @@
 		history.go(-1);
 	}
 	     myTurn = !myTurn;
+	     bold_name(username);
 	 }
      }
      
@@ -327,6 +328,7 @@
 		history.go(-1);
 	}
 	     myTurn = !myTurn;
+	     bold_name(opponent);
 	 }
      }
      // 무르기 루틴
@@ -1069,9 +1071,32 @@
 	 return null;  // 정상 착수 처리
      }
    
-   
+   function bold_name(username){
+	
+	var top = document.getElementById('top');
+	var divs = top.getElementsByTagName('div');
+	for (let div of divs){
+		div.style.fontWeight = "100";
+		div.style.fontSize = "30px";
+	}
+	
+	var username = document.getElementById(username);
+	username.style.fontWeight = "900";
+	username.style.fontSize = "50px";
+	 
+}
+   function write_name (){
+	var top = document.getElementById('top');
+	if (memberList.length == 1){
+		top.innerText = "혼자 있습니다."; 
+	}
+	else top.innerHTML = `<div id ='${memberList[0]}'> ${memberList[0]} </div>`+ "<div id = 'vs'> VS </div>" + `<div id ='${memberList[1]}'> ${memberList[1]} </div>`;
+	
+	return; 
+}
    
      window.onload = function() {
+	write_name(); 
 	 stroke_board(); // 보드 그리기
 	 start_game(); // 그냥 게임시작 
 	 // 이벤트 핸들러 등록

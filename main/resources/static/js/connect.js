@@ -141,15 +141,12 @@ function onMessageReceived(payload) {
 			else sendRespond(message.sender, ok);
 		} else if (content.title === 'respond') {
 			if (content.ok) {
-				console.log('create the room..');
 				// create the room;
 				var params = new URLSearchParams();
 				params.append("name", username);
 				axios.post('/omok/create', params)
 					.then(
 						response => {
-							alert(response.data.roomName + "방 개설에 성공하였습니다.")
-							console.log(response.data.roomId);
 							sendRoomId(message.sender, response.data.roomId);
 							statusChange();
 							location.href = `/omok/room/enter/${response.data.roomId}?username=${username}`;

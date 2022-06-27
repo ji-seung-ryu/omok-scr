@@ -1,8 +1,17 @@
  .top{
        margin: 0 auto;
-       width: 1000px; height: 50px;
-
+       width: fit-content; 
+	font-size: 30px; 
+	display:flex;
+	justify-content: center;
+	align-items: center;
+	height: 100px;
      }
+     .top div{
+	height: fit-content;
+	margin: 0 10px 0 10px;
+	text-align: center;
+}
 
      .layout{
        margin: 0 auto;
