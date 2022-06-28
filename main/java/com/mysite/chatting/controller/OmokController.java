@@ -62,7 +62,7 @@ public class OmokController {
 			int turn = Integer.parseInt(String.valueOf(parsedJson.get("Turn")));
 			
 			
-			omokService.setBoard(y,x,turn,omokMessage.getRoomId());
+			omokService.putStone(y,x,turn,omokMessage.getRoomId());
 			
 			
 		} catch (ParseException e) {
@@ -95,20 +95,44 @@ public class OmokController {
 	@GetMapping("/room/enter/{roomId}")
 	public String roomDetail(Model model, @PathVariable String roomId, @RequestParam String username) {
 		omokService.enterRoomById(roomId, username);
-		List<String> memberList = omokService.getUserListById(roomId);
-		int[][] board = omokService.getBoard(roomId);
+		List <String> memberList = omokService.getUserListById(roomId);
+		if (omokService.getIsRunning(roomId) == 1) {
+			model.addAttribute("board",omokService.getBoard(roomId));
+			model.addAttribute("username", username);
+			model.addAttribute("whoTurn", omokService.getWhoTurn(roomId));
+			model.addAttribute("isBlack", omokService.getIsBlack(roomId));
+			model.addAttribute("memberList", memberList);
+			model.addAttribute("omokRoomId", roomId);
+			model.addAttribute("isRunning", 1);
+			
+			
+			return "omok";
+		} else if (memberList.size() == 2) {
+			omokService.gameStart(roomId);
+		//	omokService.setIsRunning(roomId, 1);
+			model.addAttribute("board",omokService.getBoard(roomId));
+			model.addAttribute("username", username);
+			model.addAttribute("whoTurn", omokService.getWhoTurn(roomId));
+			model.addAttribute("isBlack", omokService.getIsBlack(roomId));
+			model.addAttribute("memberList", memberList);
+			model.addAttribute("omokRoomId", roomId);
+			model.addAttribute("isRunning", 1);
 
-		if (memberList.size() == 2) {
-			model.addAttribute("opponent", memberList.get(0));
-			System.out.println(username + "의 적은 " + memberList.get(0));
-		} else
-			model.addAttribute("opponent", null);
+			
+			return "omok";
+			
+		} else if (memberList.size() ==1 ){
+			model.addAttribute("isRunning", 0);
 
-		model.addAttribute("board", board);
-		model.addAttribute("username", username);
-		model.addAttribute("memberList", memberList);
-		model.addAttribute("omokRoomId", roomId);
-		return "omok";
+			return "omok";
+
+		} else {
+			// userid 받아야 함. 나중에.. 
+			return "/login";
+		}
+		
+		//model.addAttribute("turn", turn);
+		
 	}
 
 	// 특정 채팅방 조회

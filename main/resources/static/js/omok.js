@@ -14,8 +14,8 @@
      var stone_black_color = "black";  // 흑돌 출력용 CSS 색깔 문자열
      var stone_white_color = "white";  // 백돌 출력용 CSS 색깔 문자열
 
-     var gamestart = false;            // 게임 시작 여부
-     var blackturn = true;             // 게임 턴 차례
+     var gamestart = true;            // 게임 시작 여부
+                  // 게임 턴 차례
      var whitefirst = false;           // 백돌 선수 여부
      var gamestart_time = '';          // 게임 시작 시간 저장용
      var gameend_time = '';            // 게임 종료 시간 저장용
@@ -116,6 +116,8 @@
      /* ********** 이벤트 핸들러, 인터페이스 ********** */
      // 게임 시작 처리 루틴
      function start_game(){
+	bold_name (whoTurn);
+	
 	 document.getElementById("start_button").disabled = true;
 	 document.getElementById("retire_button").disabled = false;
 	 document.getElementById("blackfirst").disabled = true;
@@ -1035,7 +1037,7 @@
 	 return null;  // 정상 착수 처리
      }
    
-   function bold_name(username){
+   function bold_name(player){
 	
 	var top = document.getElementById('top');
 	var divs = top.getElementsByTagName('div');
@@ -1044,9 +1046,9 @@
 		div.style.fontSize = "30px";
 	}
 	
-	var username = document.getElementById(username);
-	username.style.fontWeight = "900";
-	username.style.fontSize = "50px";
+	var userfont = document.getElementById(player);
+	userfont.style.fontWeight = "900";
+	userfont.style.fontSize = "50px";
 	 
 }
    function write_name (){
@@ -1060,9 +1062,15 @@
 }
    
      window.onload = function() {
+	if (isRunning == 0) location.reload();
 	write_name(); 
 	 stroke_board(); // 보드 그리기
+	 
+	 // game이 진행중이지 않으면 
 	 start_game(); // 그냥 게임시작 
+	 
+	 print_board(board);
+
 	 // 이벤트 핸들러 등록
 	 document.getElementById("mycanvas").onclick = put_stone;       // 캔버스 클릭 핸들러 등록
 	 document.getElementById("start_button").onclick = start_game;  // 시작 버튼 클릭 핸들러 등록

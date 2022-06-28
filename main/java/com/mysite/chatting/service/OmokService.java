@@ -56,9 +56,9 @@ public class OmokService {
 		return omokRoom.getMemberList(); 
 	}
 	
-	public String getTurn (String roomId) {
+	public String getWhoTurn (String roomId) {
 		OmokRoom omokRoom = omokRooms.get(roomId);
-		return omokRoom.getTurn(); 
+		return omokRoom.getWhoTurn(); 
 	}
 	
 	public int[][] getBoard (String roomId){
@@ -66,10 +66,32 @@ public class OmokService {
 		return omokRoom.getBoard();
 	}
 	
-	public void setBoard (int y, int x, int turn, String roomId) {
+	public void putStone (int y, int x, int turn, String roomId) {
 		OmokRoom omokRoom = omokRooms.get(roomId);
 		omokRoom.putStone(y,x,turn);
 		
 	}
 	
+	public int getIsRunning (String roomId) {
+		OmokRoom omokRoom = omokRooms.get(roomId);
+		return omokRoom.getIsRunning();
+		
+	}
+	
+	
+	public void setIsRunning (String roomId, int value) {
+		OmokRoom omokRoom = omokRooms.get(roomId);
+		omokRoom.setIsRunning(value);
+	}
+	
+	public int getIsBlack (String roomId) {
+		OmokRoom omokRoom = omokRooms.get(roomId);
+		return omokRoom.getIsBlack();
+	}
+	
+	public void gameStart(String roomId) {
+		OmokRoom omokRoom = omokRooms.get(roomId);
+		omokRoom.gameStart();
+		
+	}
 }

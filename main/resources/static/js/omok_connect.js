@@ -1,7 +1,7 @@
 var stompClient = null;
 
 function connect() {
-	if (username) {
+	if (isRunning && username) {
 		var socket = new SockJS('/javatechie');
 		stompClient = Stomp.over(socket);
 		stompClient.connect({}, onConnected, onError);
@@ -60,10 +60,7 @@ function onMessageReceived(payload) {
 		if (message.members[0] == username) myTurn = 1;
 		else myTurn = 0; 
 		
-		if (myTurn) {
-			bold_name(username);
-		}
-		else bold_name(opponent);
+	
 		
 		message.members.forEach((member) =>{
 			if (member != username) opponent = member;
